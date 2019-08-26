@@ -53,4 +53,12 @@ RUN addgroup -g 1000 node \
 
 # End Node.js
 
-ENV BUILDKITE_AGENT_TAGS="node=10"
+# Start Terraform
+
+RUN wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
+RUN unzip terraform_0.11.11_linux_amd64.zip -d /bin
+RUN rm terraform_0.11.11_linux_amd64.zip
+
+# End Terraform
+
+ENV BUILDKITE_AGENT_TAGS="node=10,terraform=0.11"
