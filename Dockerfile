@@ -61,4 +61,23 @@ RUN rm terraform_0.11.11_linux_amd64.zip
 
 # End Terraform
 
-ENV BUILDKITE_AGENT_TAGS="node=10,terraform=0.11"
+
+# Start GCloud
+
+RUN wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-224.0.0-linux-x86_64.tar.gz
+RUN tar -xvzf google-cloud-sdk-224.0.0-linux-x86_64.tar.gz -C ~/
+
+RUN ~/google-cloud-sdk/install.sh
+RUN ln -s ~/google-cloud-sdk/bin/gcloud /bin
+
+RUN gcloud components install kubectl
+RUN ln -s ~/google-cloud-sdk/bin/kubectl /bin
+RUN ln -s ~/google-cloud-sdk/bin/docker-credential-gcloud /bin
+
+# Debug
+# COPY ./application_default_credentials.json /root/account-auth.json
+# RUN gcloud auth activate-service-account --key-file /root/account-auth.json
+
+# End GCloud
+
+ENV BUILDKITE_AGENT_TAGS="node=10,terraform=0.11,gcloud=true,kubectl=true"
